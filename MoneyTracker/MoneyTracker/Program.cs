@@ -1,12 +1,19 @@
+﻿using System.Text.Json.Serialization;
+using FluentValidation.AspNetCore;
+using MoneyTracker.Application;
+using MoneyTracker.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddMvc().AddFluentValidation();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddPersistence(builder.Configuration);
+//builder.Services.AddApplication();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
