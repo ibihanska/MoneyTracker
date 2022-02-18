@@ -2,15 +2,25 @@
 
 namespace MoneyTracker.Domain.AccountAggregate
 {
-    public class Account:AuditableEntity
+    public class Account : AuditableEntity
     {
         public Guid Id { get; private set; }
         public string? Name { get; private set; }
         public decimal Balance { get; private set; }
         public AccountType AccountType { get; private set; }
         public string UserEmail { get; private set; }
-
-        public List<Transaction> Transactions { get; private set; }
+        private List<Transaction> _incomeTransactions;
+        private List<Transaction> _exspenseTransactions;
+        public IReadOnlyCollection<Transaction> ExpenseTransactions
+        {
+            get => _exspenseTransactions;
+            private set => _exspenseTransactions = value.ToList();
+        }
+        public IReadOnlyCollection<Transaction> IncomeTransactions
+        {
+            get => _incomeTransactions;
+            private set => _incomeTransactions = value.ToList();
+        }
         public Account(string name, decimal balance, AccountType accountType, string userEmail)
         {
             Id = Guid.NewGuid();
@@ -18,40 +28,42 @@ namespace MoneyTracker.Domain.AccountAggregate
             Balance = balance;
             AccountType = accountType;
             UserEmail = userEmail;
-            Transactions = new List<Transaction>();
+            IncomeTransactions = new List<Transaction>();
+            ExpenseTransactions = new List<Transaction>();
         }
 
-        public void AddTransaction(Guid fromAccountId, Guid toAccountId, Tag tag, TransactionType transactionType, decimal amount, string note, DateTime transactionDate)
+        public void Update(string name, AccountType accountType)
         {
-            var transaction = new Transaction(fromAccountId, toAccountId, tag, transactionType, amount, note, transactionDate);
-            Transactions.Add(transaction);
+            Name = name;
+            AccountType = accountType;
         }
-        public Transaction GetTransaction(Guid transactionId)
+
+        public void AddExpenseTransaction(Transaction transaction)
         {
-            var transaction = Transactions.Where(t => t.TransactionId == transactionId).FirstOrDefault();
-            if (transaction == null)
+            _exspenseTransactions.Add(transaction);
+            if(this.Balance-transaction.Amount<0)
             {
-                throw new Exception("Transaction with this Id doesn't exist!");
+                throw new BadRequestException("There are not enough money on this account");
             }
-            return transaction;
+            this.Balance -= transaction.Amount;
         }
-        public void UpdateTransaction(Guid transactionId, Guid fromAccountId, Guid toAccountId, Tag tag, TransactionType transactionType, decimal amount, string note, DateTime transactionDate)
+
+        public void AddIncomeTransaction(Transaction transaction)
         {
-            var transaction = Transactions.Where(t => t.TransactionId == transactionId).FirstOrDefault();
-            if (transaction == null)
-            {
-                throw new Exception("Transaction with this Id doesn't exist!");
-            }
-            transaction.UpdateTransactionData(fromAccountId, toAccountId, tag, transactionType, amount, note, transactionDate);
+            _incomeTransactions.Add(transaction);
+            this.Balance += transaction.Amount;
         }
-        public void DeleteTransaction(Guid transactionId)
+
+        public void RemoveExpenseTransaction(Transaction transaction)
         {
-            var transaction = Transactions.Where(t => t.TransactionId == transactionId).FirstOrDefault();
-            if (transaction == null)
-            {
-                throw new Exception("Transaction with this Id doesn't exist!");
-            }
-            Transactions.Remove(transaction);
+            _exspenseTransactions.Remove(transaction);
+            this.Balance += transaction.Amount;
+        }
+
+        public void RemoveIncomeTransaction(Transaction transaction)
+        {
+            _incomeTransactions.Remove(transaction);
+            this.Balance -= transaction.Amount;
         }
     }
 }
