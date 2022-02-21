@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Transaction</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+</div>
+<div class="modal-body">
+    <button class="btn" (click)="selectTransactionType('Expense')">Expense</button>
+    <button class="btn" (click)="selectTransactionType('Transfer')">Transfer</button>
+    <button class="btn" (click)="selectTransactionType('Income')">Income</button>
+    <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+        <div class="form-group" *ngIf="transactionType!='Income'">
+            <label>From</label>
+            <select class="form-control form-control-lg" name="fromAccountId" #fromAccountId="ngModel"
+                [(ngModel)]="transaction.fromAccountId">
+                <option *ngFor="let acc of this.accounts" [ngValue]=acc.id >{{acc.name}}</option>
+            </select>
+        </div>
+        <div class="form-group" *ngIf="transactionType!='Expense'">
+            <label>To</label>
+            <select class="form-control form-control-lg" name="toAccountId" #toAccountId="ngModel"
+                [(ngModel)]="transaction.toAccountId">
+                <option *ngFor="let acc of this.accounts" [ngValue]=acc.id>{{acc.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Amount</label>
+            <input class="form-control form-control-lg" type="number" placeholder="Amount" name="amount"
+                #amount="ngModel" [(ngModel)]="transaction.amount" required min="0.1"
+                [class.invalid]="amount.invalid && amount.touched" />
+            <div *ngIf="amount.errors?.['min']" class="text-danger">
+                Amount must be greater than 0!
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Date</label>
+            <input class="form-control form-control-lg" placeholder="Date" name="transactionDate"
+                #transactionDate="ngModel" [ngModel]="transaction.transactionDate|date:'yyyy-MM-dd'"
+                (ngModelChange)="setTransactionDate($event)" required
+                [class.invalid]="transactionDate.invalid && transactionDate.touched" type="date" />
+        </div>
+        <div class="form-group" *ngIf="transactionType!='Transfer'">
+            <label>Tag</label>
+            <select id="myExpenseSelect" *ngIf="transactionType!='Income'" class="form-control form-control-lg"
+                name="tagName" #tagName="ngModel" [(ngModel)]="transaction.tagName">
+                <option *ngFor="let tr of this.expense" [ngValue]=tr>{{tr}}</option>
+            </select>
+            <select id="myIncomeSelect" *ngIf="transactionType=='Income'" class="form-control form-control-lg"
+                name="tagName" #tagName="ngModel" [(ngModel)]="transaction.tagName">
+                <option *ngFor="let tr of this.income" [ngValue]=tr>{{tr}}</option>
+            </select>
+            <input class="form-control form-control-lg" name="newOption" [(ngModel)]="newOption" />
+            <button *ngIf="transactionType!='Income'" type="button" (click)="addExpenseTag()">Insert option</button>
+            <button *ngIf="transactionType=='Income'" type="button" (click)="addIncomeTag()">Insert option</button>
+        </div>
+        <div class="form-group">
+            <label>Note</label>
+            <input class="form-control form-control-lg" placeholder="Note" name="note" #note="ngModel" maxlength="20"
+                [(ngModel)]="transaction.note" />
+        </div>
+        <div class="modal-footer form-group">
+            <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">Submit</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,61 @@
+table{
+    width: 75%;
+}
+
+button{
+    padding:6px;
+    color:#fff;
+    background-color: #04AA6D;
+    border:none;
+  
+}
+button a{
+    display: block;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+form {
+
+    border: 1px solid lightgrey;
+    padding: 0.5%;
+    width:max-content;
+}
+.btn {
+    position: relative;
+    line-height: 1;
+    padding: 0.92857143em 1.14285714em;
+    color: white;
+    background-color: #04AA6D;
+    font-weight: 400;
+    border: 1px solid lightgray;
+ 
+}
+
+ngb-pagination ::ng-deep a {
+    color: black !important;
+  }
+  
+  ngb-pagination ::ng-deep .page-item.active .page-link {
+    border-color: black;
+    background-color: lightgrey;
+  }
+  
+  ngb-pagination ::ng-deep .page-item.active .page-link:focus, .page-link:not(:disabled):not(.disabled):active:focus {
+    box-shadow: 0 0 0 0.1rem dimgrey;
+  }
+  
+  ngb-pagination ::ng-deep .page-link:not(:disabled):not(.disabled):active:focus {
+    box-shadow: 0 0 0 0.1rem dimgrey;
+  }
+
+  .container{
+    margin-left:25%;padding:1px 16px;height:1000px;position: fixed; padding: 8px 16px;
+  }
+
+  .logo{
+    margin: 0 1.5em 0 1.5em;
+    display: flex;
+    justify-content: flex-start;
+     padding: 3px;
+  }

@@ -8,7 +8,7 @@ namespace MoneyTracker.Application.Common.Exceptions
         public ValidationException()
             : base("One or more validation failures have occurred.")
         {
-            Failures = new Dictionary<string, IEnumerable<string>>();
+            Failures = new Dictionary<string, string[]>();
         }
 
         public ValidationException(List<ValidationFailure> failures)
@@ -17,9 +17,9 @@ namespace MoneyTracker.Application.Common.Exceptions
             Failures = failures.GroupBy(x => x.PropertyName)
                    .ToDictionary(
                      x => x.Key,
-                     x => x.Select(f => f.ErrorMessage));
+                     x => x.Select(f => f.ErrorMessage).ToArray());
         }
 
-        public IReadOnlyDictionary<string, IEnumerable<string>> Failures { get; } 
+        public IReadOnlyDictionary<string, string[]> Failures { get; } 
     }
 }

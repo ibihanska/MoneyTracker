@@ -1,0 +1,11 @@
+<!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) -->
+<nav>
+    <ul>
+        <a class="navbar-brand logo" href="#">Money Tracker</a>
+        <li><a routerLink="/account" routerLinkActive="active">Accounts</a></li>
+        <li><a routerLink="/transaction" routerLinkActive="active">Transactions</a></li>
+    </ul>
+</nav>
+<!-- The routed views render in the <router-outlet>-->
+<router-outlet></router-outlet>
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

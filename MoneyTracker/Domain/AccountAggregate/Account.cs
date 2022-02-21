@@ -43,7 +43,7 @@ namespace MoneyTracker.Domain.AccountAggregate
             _exspenseTransactions.Add(transaction);
             if(this.Balance-transaction.Amount<0)
             {
-                throw new BadRequestException("There are not enough money on this account");
+                throw new ConflictException("There are not enough money on this account");
             }
             this.Balance -= transaction.Amount;
         }

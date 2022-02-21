@@ -5,7 +5,7 @@ using MoneyTracker.Domain.AccountAggregate;
 
 namespace MoneyTracker.Application.AccountCommands
 {
-    public class AddAccountCommand : IRequest
+    public class AddAccountCommand : IRequest<Guid>
     {
         public string Name { get; set; }
         public decimal Balance { get; set; }
@@ -21,7 +21,7 @@ namespace MoneyTracker.Application.AccountCommands
 
             }
         }
-        public class AddAccountCommandHandler : IRequestHandler<AddAccountCommand>
+        public class AddAccountCommandHandler : IRequestHandler<AddAccountCommand, Guid>
         {
             private readonly IMoneyTrackerDbContext _context;
             private readonly ICurrentUserService _currentUser;
@@ -31,12 +31,12 @@ namespace MoneyTracker.Application.AccountCommands
                 _currentUser = currentUser;
             }
 
-            public async Task<Unit> Handle(AddAccountCommand request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(AddAccountCommand request, CancellationToken cancellationToken)
             {
                 var account = new Account(request.Name, request.Balance, request.AccountType, _currentUser.UserEmail);
                 _context.Accounts.Add(account);
                 await _context.SaveChangesAsync(cancellationToken);
-                return Unit.Value;
+                return account.Id;
             }
         }
     }

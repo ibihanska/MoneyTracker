@@ -6,31 +6,25 @@ using MoneyTracker.Domain.AccountAggregate;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
-    public class AddTransactionCommand : IRequest
+    public class AddTransactionCommand : IRequest<Guid>
     {
         public Guid? FromAccountId { get; set; }
         public Guid? ToAccountId { get; set; }
-        public TransactionType TransactionType { get; set; }
-        public decimal Ammount { get; set; }
-        public DateTime DateTime { get; set; }
-        public Tag Tag { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string? TagName { get; set; }
         public string? Note { get; set; }
         public class AddTransactionCommandValidator : AbstractValidator<AddTransactionCommand>
         {
             public AddTransactionCommandValidator()
             {
-                RuleFor(m => m.Ammount).NotEmpty().MustAsync(BeValidIdAsync).WithMessage("Amount must be greater than 0, it is {PropertyValue}");
+                RuleFor(m => m.Amount).NotEmpty().GreaterThan(0);
                 RuleFor(m => m.FromAccountId).NotEqual(m => m.ToAccountId);
-                RuleFor(m => m.TransactionType).IsInEnum().NotEmpty();
-                RuleFor(m => m.DateTime).NotEmpty();
-
-            }
-            private Task<bool> BeValidIdAsync(decimal amount, CancellationToken cancellationToken)
-            {
-                return Task.FromResult(amount > 0);
+                RuleFor(m => m.TransactionDate).NotEmpty();
+                RuleFor(m => m.TagName).NotEmpty().When(m=>m.FromAccountId==null|| m.ToAccountId == null);
             }
         }
-        public class AddTransactionCommandHandler : IRequestHandler<AddTransactionCommand>
+        public class AddTransactionCommandHandler : IRequestHandler<AddTransactionCommand, Guid>
         {
             private readonly IMoneyTrackerDbContext _context;
 
@@ -39,16 +33,15 @@ namespace MoneyTracker.Application.TransactionCommands
                 _context = context;
             }
 
-            public async Task<Unit> Handle(AddTransactionCommand request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(AddTransactionCommand request, CancellationToken cancellationToken)
             {
                 var transaction = new Transaction(
                     request.FromAccountId,
                     request.ToAccountId,
-                    request.Tag,
-                    request.TransactionType,
-                    request.Ammount,
+                    request.TagName,
+                    request.Amount,
                     request.Note,
-                    request.DateTime);
+                    request.TransactionDate);
 
                 var fromAccount = await _context.Accounts
                     .Include(x => x.ExpenseTransactions)
@@ -63,7 +56,7 @@ namespace MoneyTracker.Application.TransactionCommands
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return Unit.Value;
+                return transaction.Id;
             }
         }
     }

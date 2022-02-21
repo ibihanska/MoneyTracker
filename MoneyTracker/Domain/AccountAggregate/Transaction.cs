@@ -18,19 +18,19 @@ namespace MoneyTracker.Domain.AccountAggregate
 
         private Transaction() { }
 
-        public Transaction(Guid? fromAccountId, Guid? toAccountId, Tag? tag, TransactionType transactionType, decimal amount, string? note, DateTime transactionDate)
+        public Transaction(Guid? fromAccountId, Guid? toAccountId, string? tag, decimal amount, string? note, DateTime transactionDate)
         {
             if (fromAccountId == toAccountId) throw new ArgumentException($"{nameof(fromAccountId)} has not be equal to {nameof(toAccountId)}");
             Id = Guid.NewGuid();
             FromAccountId = fromAccountId;
             ToAccountId = toAccountId;
-            Tag = tag;
+            Tag = new Tag(tag);
             Amount = amount;
             Note = note;
             TransactionDate = transactionDate;
         }
 
-        public void Update(Guid? fromAccountId, Guid? toAccountId, Tag? tag, TransactionType transactionType, decimal amount, string note, DateTime transactionDate)
+        public void Update(Guid? fromAccountId, Guid? toAccountId, string? TagName, decimal amount, string note, DateTime transactionDate)
         {
             if (fromAccountId == toAccountId) throw new ArgumentException($"{nameof(fromAccountId)} has not be equal to {nameof(toAccountId)}");
             if (this.TransactionType == TransactionType.Expense)
@@ -48,7 +48,7 @@ namespace MoneyTracker.Domain.AccountAggregate
             }
             FromAccountId = fromAccountId;
             ToAccountId = toAccountId;
-            Tag = tag;
+            Tag = new Tag(TagName);
             Amount = amount;
             Note = note;
             TransactionDate = transactionDate;
