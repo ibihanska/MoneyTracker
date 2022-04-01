@@ -1,6 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add Transaction</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.close()"></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
 </div>
 <div class="modal-body">
     <button class="btn" (click)="selectTransactionType('Expense')">Expense</button>
@@ -11,7 +10,7 @@
             <label>From</label>
             <select class="form-control form-control-lg" name="fromAccountId" #fromAccountId="ngModel"
                 [(ngModel)]="transaction.fromAccountId">
-                <option *ngFor="let acc of this.accounts" [ngValue]=acc.id >{{acc.name}}</option>
+                <option *ngFor="let acc of this.accounts" [ngValue]=acc.id>{{acc.name}}</option>
             </select>
         </div>
         <div class="form-group" *ngIf="transactionType!='Expense'">
@@ -40,11 +39,11 @@
         <div class="form-group" *ngIf="transactionType!='Transfer'">
             <label>Tag</label>
             <select id="myExpenseSelect" *ngIf="transactionType!='Income'" class="form-control form-control-lg"
-                name="tagName" #tagName="ngModel" [(ngModel)]="transaction.tagName">
+                name="tagName" #tagName="ngModel" [(ngModel)]="transaction.tagName" required>
                 <option *ngFor="let tr of this.expense" [ngValue]=tr>{{tr}}</option>
             </select>
             <select id="myIncomeSelect" *ngIf="transactionType=='Income'" class="form-control form-control-lg"
-                name="tagName" #tagName="ngModel" [(ngModel)]="transaction.tagName">
+                name="tagName" #tagName="ngModel" [(ngModel)]="transaction.tagName" required>
                 <option *ngFor="let tr of this.income" [ngValue]=tr>{{tr}}</option>
             </select>
             <input class="form-control form-control-lg" name="newOption" [(ngModel)]="newOption" />

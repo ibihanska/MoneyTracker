@@ -1,5 +1,4 @@
 import {Component, TemplateRef} from '@angular/core';
-
 import {ToastService} from './toast.service';
 
 
@@ -8,6 +7,7 @@ import {ToastService} from './toast.service';
   template: `
     <ngb-toast
       *ngFor="let toast of toastService.toasts"
+      [header]="toast.headertext"
       [class]="toast.classname"
       [autohide]="true"
       [delay]="toast.delay || 5000"

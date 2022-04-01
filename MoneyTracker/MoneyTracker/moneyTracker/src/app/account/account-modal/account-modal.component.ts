@@ -20,7 +20,7 @@ export class AccountModalComponent implements OnInit {
   ) { }
 
   accounts: Account[] = [];
-  accountId:string='';
+  accountId: string = '';
 
   ngOnInit(): void {
     this.getAccounts();
@@ -28,6 +28,10 @@ export class AccountModalComponent implements OnInit {
 
   get isUpdateOperation() {
     return !!this.account.id;
+  }
+
+  close() {
+    this.activeModal.close();
   }
 
   onSubmit(form: NgForm) {
@@ -48,13 +52,10 @@ export class AccountModalComponent implements OnInit {
   postAccount(form: NgForm) {
     this.service.postAccount(this.account).subscribe(
       res => {
-        this.account.id=res;
+        this.account.id = res;
         this.accountSubmit.emit(this.account);
         form.form.reset();
         this.toastService.show('Account added successfully!', { classname: 'bg-success text-light', delay: 10000 });
-      },
-      err => {
-        console.log(err);
       }
     );
   }
@@ -65,9 +66,6 @@ export class AccountModalComponent implements OnInit {
         this.accountSubmit.emit(this.account);
         form.form.reset();
         this.toastService.show('Account updated successfully!');
-      },
-      err => {
-        console.log(err);
       }
     );
   }

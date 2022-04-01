@@ -1,5 +1,6 @@
 body {
     margin: 0;
+   
   }
   
   ul {
@@ -29,3 +30,94 @@ body {
     background-color: #555;
     color: white;
   }
+  .logo{
+    text-decoration: underline;
+    width: 25%;
+    justify-content: center;
+    display: flex;
+    word-spacing: -2px;
+    background: #f1f1f1;
+    margin: 0;
+   }
+
+   header{
+     display: flex;
+     justify-content:space-between;
+   }
+
+   hr{
+     margin: 0;
+   }
+
+
+   #hero {
+    width: 100%;
+    height: calc(100vh - 40px);
+    background: url(../assets/hero-bg.png) center bottom no-repeat;
+    background-size: 100%;
+    position: fixed;
+    margin-top: 40px;
+  }
+  
+  
+  #hero .hero-container {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  #hero h1 {
+    margin: 0 0 10px 0;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+    font-family: "Philosopher", sans-serif;
+    color: #71c55d;
+  }
+  
+
+  
+  #hero h2 {
+    color: #777;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+  }
+  
+  
+  #hero img {
+    max-width: 95%;
+    margin-bottom: 30px;
+  }
+  
+  #hero .btn-get-started {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 13px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 11px 36px;
+    border-radius: 50px;
+    transition: 0.5s;
+    margin-bottom: 30px;
+    border: 2px solid #71c55d;
+    background: #fff;
+    color: #71c55d;
+    text-decoration: none;
+  }
+  
+  #hero .btn-get-started:hover {
+    background: #71c55d;
+    color: #fff;
+  }
+
+  

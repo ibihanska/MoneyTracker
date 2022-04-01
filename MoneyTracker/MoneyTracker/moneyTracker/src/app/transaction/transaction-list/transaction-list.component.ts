@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -40,8 +39,7 @@ export class TransactionListComponent implements OnInit {
           res => {
             this.transactions = this.transactions.filter(item => item.id !== id);
             this.toastService.show("Deleted successfully", { classname: 'bg-danger text-light', delay: 15000 });
-          },
-          err => { console.log(err) }
+          }
         )
     }
   }
@@ -70,7 +68,7 @@ export class TransactionListComponent implements OnInit {
   getExpenseTags() {
     this.expenseTags = this.transactions.filter(x => x.transactionType == "Expense");
     this.expenseTags.map(t => this.expense.add(t.tagName));
-    return this.expense;
+    return new Set(this.expense);
   }
 
   reset() {
@@ -86,10 +84,11 @@ export class TransactionListComponent implements OnInit {
     const component = ref.componentInstance as TransactionModalComponent;
     component.expense = this.getExpenseTags();
     component.income = this.getIncomeTags();
-    let tr = new Transaction();
     component.transaction = transaction ? { ...transaction } : ({} as Transaction);
     component.transactionSubmit.subscribe((a) => {
-      tr=Object.assign({}, a);
+      component.close();
+      let tr = new Transaction();
+      tr = { ...a };
       const changedTransaction = !!this.transactions.find((x) => x.id == a.id);
       this.transactions = changedTransaction
         ? this.transactions.map((x) => {

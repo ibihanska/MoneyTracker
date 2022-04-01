@@ -13,8 +13,8 @@ export class TransactionService {
   constructor(private http: HttpClient) { }
   readonly baseURL = environment.apiUrl + 'Transactions';
 
-  get() {
-    return this.http.get(this.baseURL);
+  get(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(this.baseURL);
   }
 
   deleteTransaction(id: string) {
