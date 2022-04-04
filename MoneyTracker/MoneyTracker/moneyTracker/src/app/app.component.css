@@ -50,17 +50,17 @@ body {
    }
 
 
-   #hero {
+   #welcome-page {
     width: 100%;
     height: calc(100vh - 40px);
-    background: url(../assets/hero-bg.png) center bottom no-repeat;
+    background: url(../assets/welcome-page-bg.png) center bottom no-repeat;
     background-size: 100%;
     position: fixed;
     margin-top: 40px;
   }
   
   
-  #hero .hero-container {
+  #welcome-page .welcome-page-container {
     position: absolute;
     bottom: 0;
     top: 0;
@@ -73,7 +73,7 @@ body {
     text-align: center;
   }
   
-  #hero h1 {
+  #welcome-page h1 {
     margin: 0 0 10px 0;
     font-size: 48px;
     font-weight: 700;
@@ -84,7 +84,7 @@ body {
   
 
   
-  #hero h2 {
+  #welcome-page h2 {
     color: #777;
     margin-bottom: 30px;
     font-size: 20px;
@@ -93,12 +93,12 @@ body {
   }
   
   
-  #hero img {
+  #welcome-page img {
     max-width: 95%;
     margin-bottom: 30px;
   }
   
-  #hero .btn-get-started {
+  #welcome-page .btn-get-started {
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     font-weight: 400;
@@ -115,7 +115,7 @@ body {
     text-decoration: none;
   }
   
-  #hero .btn-get-started:hover {
+  #welcome-page .btn-get-started:hover {
     background: #71c55d;
     color: #fff;
   }

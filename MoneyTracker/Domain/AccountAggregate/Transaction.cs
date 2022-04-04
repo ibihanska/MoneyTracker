@@ -21,6 +21,7 @@ namespace MoneyTracker.Domain.AccountAggregate
         public Transaction(Guid? fromAccountId, Guid? toAccountId, string? tag, decimal amount, string? note, DateTime transactionDate)
         {
             if (fromAccountId == toAccountId) throw new ArgumentException($"{nameof(fromAccountId)} has not be equal to {nameof(toAccountId)}");
+            if (amount <=0) throw new ArgumentException($"{nameof(amount)} must be greater than 0");
             Id = Guid.NewGuid();
             FromAccountId = fromAccountId;
             ToAccountId = toAccountId;

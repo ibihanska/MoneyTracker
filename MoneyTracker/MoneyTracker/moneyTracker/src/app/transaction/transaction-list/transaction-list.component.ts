@@ -87,8 +87,7 @@ export class TransactionListComponent implements OnInit {
     component.transaction = transaction ? { ...transaction } : ({} as Transaction);
     component.transactionSubmit.subscribe((a) => {
       component.close();
-      let tr = new Transaction();
-      tr = { ...a };
+      let tr = { ...a };
       const changedTransaction = !!this.transactions.find((x) => x.id == a.id);
       this.transactions = changedTransaction
         ? this.transactions.map((x) => {

@@ -9,7 +9,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   handleError(err: any): void {
     console.log(err);
     if (err.status == '404') {
-      this.toastService.show('Page not Found', { classname: 'bg-danger text-light', delay: 15000, headertext: "Error:" + err.status });
+      this.toastService.show('Not Found', { classname: 'bg-danger text-light', delay: 15000, headertext: "Error:" + err.status });
     }
     else {
       this.toastService.show(

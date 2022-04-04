@@ -16,11 +16,11 @@
     <router-outlet></router-outlet>
 </div>
 <div *ngIf="!(auth.isAuthenticated$ | async);">
-    <section id="hero" class="wow fadeIn">
-        <div class="hero-container">
+    <section id="welcome-page" class="wow fadeIn">
+        <div class="welcome-page-container">
             <h1>Welcome to Money Tracker</h1>
             <h2>Web app that allows you to track your income and expenses</h2>
-            <img src="../assets/hero-img.png" alt="Hero Imgs">
+            <img src="../assets/welcome-page-img.png" alt="Hero Imgs">
             <a href="#get-started" class="btn-get-started scrollto" (click)="auth.loginWithRedirect()">Get Started</a>
         </div>
     </section>

@@ -16,6 +16,7 @@ import { AuthGuard } from './authentication/auth.guard';
 import { ChartComponent } from './chart/chart.component';
 import { NgChartsModule } from 'ng2-charts';
 import { GlobalErrorHandler } from './shared/global-error-handler';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -35,9 +36,9 @@ import { GlobalErrorHandler } from './shared/global-error-handler';
     TransactionModule,
     NgbToastModule,
     AuthModule.forRoot({
-      domain: 'dev-m2qqjx7o.us.auth0.com',
-      clientId: 'U4L1Z3szuiEYaXGWjpi8Ec1DrRK3W6oS',
-      audience: 'https://moneytracker'
+      domain: environment.domain,
+      clientId: environment.clientId,
+      audience: environment.audience
     }),
     NgChartsModule,
   ],

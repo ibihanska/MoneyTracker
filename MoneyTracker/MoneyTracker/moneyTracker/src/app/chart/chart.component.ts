@@ -114,7 +114,8 @@ export class ChartComponent implements OnInit {
         this.transactions = res.map((x) => {
           return { ...x, transactionDate: new Date(x.transactionDate) };
         });
-        this.getYearReport(2022);
+        const year = Math.max(...this.transactions.map(x => x.transactionDate.getFullYear()))
+        this.getYearReport(year);
       });
   }
 }

@@ -63,8 +63,7 @@ export class AccountListComponent implements OnInit {
     component.account = account ? { ...account } : ({} as Account);
     component.accountSubmit.subscribe((a) => {
       component.close();
-      let ac = new Account;
-      ac = { ...a };
+      let ac = { ...a };
       const changedAccount = !!this.accounts.find((x) => x.id == a.id);
       this.accounts = changedAccount
         ? this.accounts.map((x) => {
