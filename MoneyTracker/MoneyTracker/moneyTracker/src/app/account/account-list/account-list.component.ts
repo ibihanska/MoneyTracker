@@ -40,10 +40,8 @@ export class AccountListComponent implements OnInit {
         .subscribe(
           res => {
             this.accounts = this.accounts.filter(item => item.id !== id);
-            // this.getAccounts();
             this.toastService.show("Deleted successfully", { classname: 'bg-danger text-light', delay: 15000 });
-          },
-          err => { console.log(err) }
+          }
         )
     }
   }
@@ -63,9 +61,9 @@ export class AccountListComponent implements OnInit {
     });
     const component = ref.componentInstance as AccountModalComponent;
     component.account = account ? { ...account } : ({} as Account);
-    let ac = new Account;
     component.accountSubmit.subscribe((a) => {
-      ac = Object.assign({}, a);
+      component.close();
+      let ac = { ...a };
       const changedAccount = !!this.accounts.find((x) => x.id == a.id);
       this.accounts = changedAccount
         ? this.accounts.map((x) => {

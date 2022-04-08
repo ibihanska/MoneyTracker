@@ -1,0 +1,10 @@
+.container{
+    margin-left:25%;
+    padding:1px 16px;
+    height:1000px;
+    position: fixed;
+    padding: 8px 16px;
+    display: block;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+}

@@ -7,8 +7,7 @@ namespace MoneyTracker.Api.Services
     {
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            //UserEmail = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
-            UserEmail = "alice@gmail.com";
+            UserEmail = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
         }
 
         public string UserEmail { get; }

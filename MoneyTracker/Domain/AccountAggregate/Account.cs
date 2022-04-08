@@ -40,8 +40,12 @@ namespace MoneyTracker.Domain.AccountAggregate
 
         public void AddExpenseTransaction(Transaction transaction)
         {
+            if (transaction.TransactionType == TransactionType.Income)
+            {
+                throw new InvalidOperationException("Can not add income transaction to list of expense transactions");
+            }
             _exspenseTransactions.Add(transaction);
-            if(this.Balance-transaction.Amount<0)
+            if (this.Balance - transaction.Amount < 0)
             {
                 throw new ConflictException("There are not enough money on this account");
             }
@@ -50,6 +54,10 @@ namespace MoneyTracker.Domain.AccountAggregate
 
         public void AddIncomeTransaction(Transaction transaction)
         {
+            if (transaction.TransactionType == TransactionType.Expense)
+            {
+                throw new InvalidOperationException("Can not add expense transaction to list of income transactions");
+            }
             _incomeTransactions.Add(transaction);
             this.Balance += transaction.Amount;
         }
@@ -63,6 +71,10 @@ namespace MoneyTracker.Domain.AccountAggregate
         public void RemoveIncomeTransaction(Transaction transaction)
         {
             _incomeTransactions.Remove(transaction);
+            if (this.Balance - transaction.Amount < 0)
+            {
+                throw new ConflictException("There are not enough money on this account");
+            }
             this.Balance -= transaction.Amount;
         }
     }

@@ -39,6 +39,10 @@ export class TransactionModalComponent implements OnInit {
     return !!this.transaction.id;
   }
 
+  close() {
+    this.activeModal.close();
+  }
+
   selectTransactionType(type: string) {
     this.transactionType = type;
   }
@@ -53,9 +57,6 @@ export class TransactionModalComponent implements OnInit {
         this.transactionSubmit.emit(this.transaction);
         this.resetForm(form);
         this.toastService.show('Updated successfully');
-      },
-      err => {
-        console.log(err);
       }
     );
   }
@@ -84,9 +85,6 @@ export class TransactionModalComponent implements OnInit {
         this.transactionSubmit.emit(this.transaction);
         this.resetForm(form);
         this.toastService.show('Transaction added', { classname: 'bg-success text-light', delay: 10000 });
-      },
-      err => {
-        console.log(err);
       }
     );
   }
