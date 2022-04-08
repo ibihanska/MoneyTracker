@@ -4,7 +4,7 @@ using MoneyTracker.Application.AccountQueries;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace MoneyTracker.Api.Controllers
+namespace MoneyTracker.SPA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

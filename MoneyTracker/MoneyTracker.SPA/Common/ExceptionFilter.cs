@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using MoneyTracker.Application.Common.Exceptions;
 using MoneyTracker.Domain.Common;
 
-namespace MoneyTracker.Api.Common
+namespace MoneyTracker.SPA.Common
 {
     public class ExceptionFilter : IExceptionFilter
     {

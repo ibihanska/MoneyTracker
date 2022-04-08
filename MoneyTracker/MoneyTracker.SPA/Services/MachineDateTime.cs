@@ -1,6 +1,6 @@
 ﻿using MoneyTracker.Application.Common.Interfaces;
 
-namespace MoneyTracker.Api.Services
+namespace MoneyTracker.SPA.Services
 {
     public class MachineDateTime : IDateTime
     {

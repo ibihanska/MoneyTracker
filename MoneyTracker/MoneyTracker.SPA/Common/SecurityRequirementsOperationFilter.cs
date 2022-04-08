@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace MoneyTracker.Api.Common
+namespace MoneyTracker.SPA.Common
 {
     public class SecurityRequirementsOperationFilter : IOperationFilter
     {

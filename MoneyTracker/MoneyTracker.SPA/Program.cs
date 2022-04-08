@@ -1,15 +1,13 @@
-﻿using System.Security.Claims;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MoneyTracker.Api.Common;
-using MoneyTracker.Api.Services;
 using MoneyTracker.Application;
 using MoneyTracker.Application.Common.Interfaces;
 using MoneyTracker.Persistence;
+using MoneyTracker.SPA.Common;
+using MoneyTracker.SPA.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +34,6 @@ builder.Services.AddAuthentication(options =>
     options.Audience = builder.Configuration["Authentication:Audience"];
 });
 
-
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -59,7 +55,6 @@ builder.Services.AddSwaggerGen(c =>
             {
                 AuthorizationUrl = new Uri(builder.Configuration["Authentication:Domain"] + "authorize?audience=" + builder.Configuration["Authentication:Audience"]),
                 TokenUrl = new Uri(builder.Configuration["Authentication:Domain"] + "oauth/token")
-                            
             }
         }
     });
@@ -71,7 +66,7 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddCors();
 var app = builder.Build();
-app.UseCors(options=>
+app.UseCors(options =>
 options.WithOrigins("http://localhost:4200")
 .AllowAnyMethod()
 .AllowAnyHeader());
@@ -91,7 +86,5 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
