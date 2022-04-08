@@ -11,19 +11,19 @@ import { ChartComponent } from './chart/chart.component';
 const routes: Routes = [
 
   {
-    path: 'account',
+    path: 'accounts',
     component: AccountListComponent,
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard]
   },
   {
-    path: 'transaction',
+    path: 'transactions',
     component: TransactionListComponent,
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard]
   },
   {
-    path: 'chart',
+    path: 'reports',
     component: ChartComponent,
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard]
