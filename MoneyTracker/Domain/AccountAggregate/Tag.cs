@@ -6,7 +6,7 @@
         {
             Name = name;
         }
-        public string Name { get; private set; }
+        public string? Name { get; private set; }
         public override string ToString() => Name;
         public override int GetHashCode() => Name.GetHashCode();
         public override bool Equals(object obj)

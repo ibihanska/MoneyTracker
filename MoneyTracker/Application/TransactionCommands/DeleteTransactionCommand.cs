@@ -24,7 +24,7 @@ namespace MoneyTracker.Application.TransactionCommands
 
                 transaction?.FromAccount?.RemoveExpenseTransaction(transaction);
                 transaction?.ToAccount?.RemoveIncomeTransaction(transaction);
-
+                _context.Transactions.Remove(transaction);
                 await _context.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }

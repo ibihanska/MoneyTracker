@@ -2,9 +2,9 @@
 
 namespace MoneyTracker.Domain.Common
 {
-    public class BadRequestException : Exception
+    public class ConflictException : Exception
     {
-        public BadRequestException(string message)
+        public ConflictException(string message)
             : base(message)
         {
         }

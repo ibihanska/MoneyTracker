@@ -3,9 +3,6 @@
     public enum AccountType
     {
         Cash = 0,
-        BankAccount,
-        Deposit,
-        Credit,
-        Asset
+        BankAccount
     }
 }

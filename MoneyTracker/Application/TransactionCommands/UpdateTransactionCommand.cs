@@ -12,20 +12,19 @@ namespace MoneyTracker.Application.TransactionCommands
         public Guid Id { get; set; }
         public Guid? FromAccountId { get; set; }
         public Guid? ToAccountId { get; set; }
-        public TransactionType TransactionType => FromAccountId.HasValue && ToAccountId.HasValue ? TransactionType.Transfer :
-           FromAccountId.HasValue ? TransactionType.Expense : TransactionType.Income;
-        public decimal Ammount { get; set; }
-        public DateTime DateTime { get; set; }
-        public Tag Tag { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string TagName { get; set; }
         public string? Note { get; set; }
         public class UpdateTransactionCommandValidator : AbstractValidator<UpdateTransactionCommand>
         {
             public UpdateTransactionCommandValidator()
             {
                 RuleFor(m => m.Id).NotEmpty();
-                RuleFor(m => m.Ammount).NotEmpty().GreaterThan(0);
+                RuleFor(m => m.Amount).NotEmpty().GreaterThan(0);
                 RuleFor(m => m.FromAccountId).NotEqual(m => m.ToAccountId);
-                RuleFor(m => m.DateTime).NotEmpty();
+                RuleFor(m => m.TransactionDate).NotEmpty();
+                RuleFor(m => m.TagName).NotEmpty().When(m => m.FromAccountId == null || m.ToAccountId == null);
             }
         }
         public class UpdateTransactionCommandHandler : IRequestHandler<UpdateTransactionCommand>
@@ -46,11 +45,10 @@ namespace MoneyTracker.Application.TransactionCommands
                 {
                     throw new NotFoundException(nameof(Transaction), request.Id);
                 }
-                if (transaction.TransactionType != request.TransactionType)
-                {
-                    transaction.Update(request.FromAccountId, request.ToAccountId,
-                   request.Tag, request.TransactionType, request.Ammount, request.Note, request.DateTime);
-                }
+
+                transaction.Update(request.FromAccountId, request.ToAccountId,
+               request.TagName, request.Amount, request.Note, request.TransactionDate);
+
                 await _context.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }

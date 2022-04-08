@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+</div>
+<div class="modal-body">
+    <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+        <div class="form-group">
+            <label>Account Name</label>
+            <input class="form-control form-control-lg" placeholder="Account name" name="name" #name="ngModel"
+                [(ngModel)]="account.name" required [class.invalid]="name.invalid && name.touched" />
+        </div>
+        <div *ngIf="!isUpdateOperation" class="form-group">
+            <label>Balance</label>
+            <input class="form-control form-control-lg" placeholder="Balance" name=" balance" #balance="ngModel"
+                type="number" [(ngModel)]="account.balance" required min="0.1"
+                [class.invalid]="balance.invalid && balance.touched" />
+            <div *ngIf="balance.errors?.['min']" class="text-danger">
+                Balance must be greater than 0!
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Account type</label>
+            <select class="form-control form-control-lg" name="accountType" #accountType="ngModel"
+                [(ngModel)]="account.accountType">
+                <option [ngValue]=0>Cash</option>
+                <option [ngValue]=1>BankAccount</option>
+            </select>
+        </div>
+        <div class="form-group modal-footer">
+            <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">Submit</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,64 @@
+<div class="container">
+    <form class="col-lg-8" novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Account Name</label>
+                <input class="form-control form-control-lg" placeholder="Account name" name="accountName"
+                    [(ngModel)]="accountName" />
+            </div>
+            <div class="col-lg-3">
+                <label>Tag Name</label>
+                <input class="form-control form-control-lg" placeholder="Tag" name="tag" [(ngModel)]="tagName" />
+            </div>
+            <div class="col-lg-3">
+                <label>Date</label>
+                <input class="form-control form-control-lg" placeholder="Date" name="date" [(ngModel)]="date"
+                    type="date" />
+            </div>
+            <div class="col-lg-3" style="  margin-top: auto;">
+                <button class="btn btn-info btn-lg btn-block" type="submit">Filter</button>
+                <button class="btn btn-info btn-lg btn-block" (click)="reset()">Reset</button>
+            </div>
+        </div>
+    </form>
+    <div>
+        <button (click)="openTransactionModal()">Add Transaction</button>
+    </div>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Date</th>
+                <th>From</th>
+                <th></th>
+                <th>To</th>
+                <th>Amount</th>
+                <th>Note</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tr of transactions| slice: (page-1) * pageSize : page * pageSize">
+                <td>{{tr.transactionDate| date: 'yyyy-MM-dd'}}</td>
+                <td *ngIf="tr.fromAccountName!=null">{{tr.fromAccountName}}</td>
+                <td *ngIf="tr.transactionType!='Income'">
+                    <i class="bi bi-arrow-right"></i>
+                </td>
+                <td *ngIf="tr.toAccountName!=null">{{tr.toAccountName}}</td>
+                <td *ngIf="tr.transactionType=='Income'">
+                    <i class="bi bi-arrow-left"></i>
+                </td>
+                <td *ngIf="tr.transactionType!='Transfer'">{{tr.tagName}}</td>
+                <td>{{tr.amount}}</td>
+                <td>{{tr.note}}</td>
+                <td (click)="populateForm(tr)">
+                    <i class="bi bi-pencil-square" (click)="openTransactionModal(tr)"></i>
+                </td>
+                <td>
+                    <i class="bi bi-trash" (click)="onDelete(tr.id)"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="transactions.length"></ngb-pagination>
+</div>

@@ -9,9 +9,9 @@ namespace MoneyTracker.Application.TransactionQueries
 {
     public class GetAllFilterTransactionsQuery : IRequest<List<TransactionDto>>
     {
-        public string TagName { get; set; }
-        public DateTime Date { get; set; }
-        public string AccountName { get; set; }
+        public string? TagName { get; set; }
+        public DateTime? Date { get; set; }
+        public string? AccountName { get; set; }
 
         public class GetAllFilterTransactionsQueryHandler : IRequestHandler<GetAllFilterTransactionsQuery, List<TransactionDto>>
         {
@@ -29,6 +29,7 @@ namespace MoneyTracker.Application.TransactionQueries
             public async Task<List<TransactionDto>> Handle(GetAllFilterTransactionsQuery request, CancellationToken cancellationToken)
             {
                 var transactionsQuery = _context.Transactions.AsQueryable().AsNoTracking();
+                transactionsQuery = transactionsQuery.Where(x => x.ToAccount.UserEmail == _currentUser.UserEmail || x.FromAccount.UserEmail == _currentUser.UserEmail);
                 var accountName = request.AccountName?.Trim();
                 if (!string.IsNullOrEmpty(accountName))
                 {

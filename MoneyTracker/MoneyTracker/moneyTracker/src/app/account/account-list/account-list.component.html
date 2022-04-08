@@ -1,0 +1,35 @@
+<div class="container">
+    <div>
+        <button (click)="openAccountModal()">Add Account</button>
+    </div>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Name</th>
+                <th>Balance</th>
+                <th>Type</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let acc of accounts">
+                <td>{{acc.name}}</td>
+                <td>{{acc.balance}}</td>
+                <td>{{getAccountName(acc.accountType)}}</td>
+                <td (click)="populateForm(acc)">
+                    <i class="bi bi-pencil-square" (click)="openAccountModal(acc)"></i>
+                </td>
+                <td>
+                    <i class="bi bi-trash" (click)="onDelete(acc.id)"></i>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>{{showSum()}}Total sum: </td>
+                <td>{{totalsum}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

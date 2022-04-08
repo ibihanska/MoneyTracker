@@ -10,9 +10,11 @@ namespace MoneyTracker.Persistence
         private readonly ICurrentUserService _currentUserService;
         private readonly IDateTime _dateTime;
 
-        public MoneyTrackerDbContext(DbContextOptions<MoneyTrackerDbContext> options)
+        public MoneyTrackerDbContext(DbContextOptions<MoneyTrackerDbContext> options, ICurrentUserService currentUserService,IDateTime dateTime)
             : base(options)
         {
+            _currentUserService = currentUserService;
+            _dateTime = dateTime;
         }
 
         public DbSet<Account> Accounts { get; set; }

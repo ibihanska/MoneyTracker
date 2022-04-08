@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyTracker.UnitTests", "MoneyTracker.UnitTests\MoneyTracker.UnitTests.csproj", "{3D30151F-9DD7-4CB4-9152-83FA3037671D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{D3549AD1-48E4-479C-A611-B3A84EC22AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3549AD1-48E4-479C-A611-B3A84EC22AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3549AD1-48E4-479C-A611-B3A84EC22AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D30151F-9DD7-4CB4-9152-83FA3037671D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D30151F-9DD7-4CB4-9152-83FA3037671D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D30151F-9DD7-4CB4-9152-83FA3037671D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D30151F-9DD7-4CB4-9152-83FA3037671D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{D9767F23-AB55-4869-808E-7F5AF52B28F0} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 		{C99FC18E-36E6-43BF-AD55-42523AEFF9E0} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 		{D3549AD1-48E4-479C-A611-B3A84EC22AFC} = {648B5239-C57F-4842-BBD9-67B9730C499E}
+		{3D30151F-9DD7-4CB4-9152-83FA3037671D} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7CC598C-6830-4C10-852E-848864302205}
