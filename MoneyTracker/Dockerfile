@@ -5,6 +5,13 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_17.x | bash - \
+    && apt-get install -y \
+        nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /src
 COPY ["MoneyTracker.SPA/MoneyTracker.SPA.csproj", "MoneyTracker.SPA/"]
 COPY ["Application/MoneyTracker.Application.csproj", "Application/"]
@@ -14,11 +21,6 @@ RUN dotnet restore "MoneyTracker.SPA/MoneyTracker.SPA.csproj"
 COPY . .
 WORKDIR "/src/MoneyTracker.SPA"
 RUN dotnet build "MoneyTracker.SPA.csproj" -c Release -o /app/build
-RUN apt-get update && \
-    apt-get install -y wget && \
-    apt-get install -y gnupg2 && \
-    wget -qO- https://deb.nodesource.com/setup_17.x | bash - && \
-    apt-get install -y build-essential nodejs
 
 FROM build AS publish
 RUN dotnet publish "MoneyTracker.SPA.csproj" -c Release -o /app/publish

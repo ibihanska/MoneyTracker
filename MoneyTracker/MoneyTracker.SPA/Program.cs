@@ -39,25 +39,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1",
-            new OpenApiInfo
-            {
-                Title = "API",
-                Version = "v1",
-                Description = "A REST API",
-                TermsOfService = new Uri("https://lmgtfy.com/?q=i+like+pie")
-            });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.OAuth2,
-        Flows = new OpenApiOAuthFlows
+        new OpenApiInfo
         {
-            AuthorizationCode = new OpenApiOAuthFlow
+            Title = "API",
+            Version = "v1",
+            Description = "A REST API",
+            TermsOfService = new Uri("https://lmgtfy.com/?q=i+like+pie")
+        });
+    c.AddSecurityDefinition("Bearer",
+        new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.OAuth2,
+            Flows = new OpenApiOAuthFlows
             {
-                AuthorizationUrl = new Uri(builder.Configuration["Authentication:Domain"] + "authorize?audience=" + builder.Configuration["Authentication:Audience"]),
-                TokenUrl = new Uri(builder.Configuration["Authentication:Domain"] + "oauth/token")
+                AuthorizationCode = new OpenApiOAuthFlow
+                {
+                    AuthorizationUrl =
+                        new Uri(builder.Configuration["Authentication:Domain"] + "authorize?audience=" +
+                                builder.Configuration["Authentication:Audience"]),
+                    TokenUrl = new Uri(builder.Configuration["Authentication:Domain"] + "oauth/token")
+                }
             }
-        }
-    });
+        });
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
@@ -66,25 +69,27 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddCors();
 var app = builder.Build();
-app.UseCors(options =>
-options.WithOrigins("http://localhost:4200")
-.AllowAnyMethod()
-.AllowAnyHeader());
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseCors(options => options
+    .WithOrigins("http://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
-        c.OAuthClientId(builder.Configuration["Authentication:ClientId"]);
-        c.OAuthUsePkce();
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
+    c.OAuthClientId(builder.Configuration["Authentication:ClientId"]);
+    c.OAuthUsePkce();
+});
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
+
 app.Run();
