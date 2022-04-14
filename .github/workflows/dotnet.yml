@@ -25,9 +25,8 @@ jobs:
             ${{ runner.os }}-node-
     - name: npm install
       run: npm install
-    - name: Install Angular CLI
-      run: npm install -g @angular/cli > /dev/null    
-      
+    - name: npm init
+      run: npm init
     - name: Install dependencies
       run: dotnet restore  
     - name: Build
