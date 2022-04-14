@@ -4,7 +4,7 @@ using MoneyTracker.Application.TransactionQueries;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace MoneyTracker.Api.Controllers
+namespace MoneyTracker.SPA.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -12,13 +12,13 @@ namespace MoneyTracker.Api.Controllers
     {
         // GET: api/<TransactionController>
         [HttpGet]
-        public async Task<ActionResult<List<TransactionDto>>> GetAll(string? accountName,string? tagName,DateTime? date)
+        public async Task<ActionResult<List<TransactionDto>>> GetAll(string? accountName, string? tagName, DateTime? date)
         {
-            return Ok(await Mediator.Send(new GetAllFilterTransactionsQuery 
+            return Ok(await Mediator.Send(new GetAllFilterTransactionsQuery
             {
-                AccountName=accountName,
-                TagName=tagName,
-                Date=date
+                AccountName = accountName,
+                TagName = tagName,
+                Date = date
             }));
         }
 

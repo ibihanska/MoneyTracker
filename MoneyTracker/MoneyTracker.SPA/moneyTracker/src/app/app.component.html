@@ -8,9 +8,9 @@
 <div *ngIf="auth.isAuthenticated$ | async;">
     <nav>
         <ul>
-            <li><a routerLink="/account" routerLinkActive="active">Accounts</a></li>
-            <li><a routerLink="/transaction" routerLinkActive="active">Transactions</a></li>
-            <li><a routerLink="/chart" routerLinkActive="active">Reports</a></li>
+            <li><a routerLink="/accounts" routerLinkActive="active">Accounts</a></li>
+            <li><a routerLink="/transactions" routerLinkActive="active">Transactions</a></li>
+            <li><a routerLink="/reports" routerLinkActive="active">Reports</a></li>
         </ul>
     </nav>
     <router-outlet></router-outlet>

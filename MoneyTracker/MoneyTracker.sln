@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.Api", "MoneyTracker\MoneyTracker.Api.csproj", "{F7A58022-DCCF-4797-AD2D-F47C0A139DB9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{648B5239-C57F-4842-BBD9-67B9730C499E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.Domain", "Domain\MoneyTracker.Domain.csproj", "{B02B2E52-53CB-4612-8BD3-6822819922CF}"
@@ -18,7 +16,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7DD22FB0-08E2-4F54-BFE0-D6135292C680}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Dockerfile = Dockerfile
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.SPA", "MoneyTracker.SPA\MoneyTracker.SPA.csproj", "{6E1A0EC4-CF90-4817-AB44-2223DE6EADCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.Domain.Tests", "MoneyTracker.UnitTests\MoneyTracker.Domain.Tests.csproj", "{3D30151F-9DD7-4CB4-9152-83FA3037671D}"
 EndProject
@@ -28,10 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F7A58022-DCCF-4797-AD2D-F47C0A139DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7A58022-DCCF-4797-AD2D-F47C0A139DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7A58022-DCCF-4797-AD2D-F47C0A139DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7A58022-DCCF-4797-AD2D-F47C0A139DB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B02B2E52-53CB-4612-8BD3-6822819922CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B02B2E52-53CB-4612-8BD3-6822819922CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B02B2E52-53CB-4612-8BD3-6822819922CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,17 +49,21 @@ Global
 		{3D30151F-9DD7-4CB4-9152-83FA3037671D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D30151F-9DD7-4CB4-9152-83FA3037671D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D30151F-9DD7-4CB4-9152-83FA3037671D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E1A0EC4-CF90-4817-AB44-2223DE6EADCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E1A0EC4-CF90-4817-AB44-2223DE6EADCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E1A0EC4-CF90-4817-AB44-2223DE6EADCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E1A0EC4-CF90-4817-AB44-2223DE6EADCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F7A58022-DCCF-4797-AD2D-F47C0A139DB9} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 		{B02B2E52-53CB-4612-8BD3-6822819922CF} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 		{D9767F23-AB55-4869-808E-7F5AF52B28F0} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 		{C99FC18E-36E6-43BF-AD55-42523AEFF9E0} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 		{D3549AD1-48E4-479C-A611-B3A84EC22AFC} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 		{3D30151F-9DD7-4CB4-9152-83FA3037671D} = {648B5239-C57F-4842-BBD9-67B9730C499E}
+		{6E1A0EC4-CF90-4817-AB44-2223DE6EADCB} = {648B5239-C57F-4842-BBD9-67B9730C499E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7CC598C-6830-4C10-852E-848864302205}

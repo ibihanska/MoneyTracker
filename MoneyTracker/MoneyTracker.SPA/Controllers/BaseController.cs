@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace MoneyTracker.Api.Controllers
+namespace MoneyTracker.SPA.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
