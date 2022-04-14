@@ -10,7 +10,7 @@ namespace MoneyTracker.Domain.AccountAggregate
         public Guid? ToAccountId { get; private set; }
         public Account? ToAccount { get; private set; }
         public DateTime TransactionDate { get; private set; }
-        public Tag? Tag { get; private set; }
+        public Tag Tag { get; private set; }
         public TransactionType TransactionType => FromAccountId.HasValue && ToAccountId.HasValue ? TransactionType.Transfer :
             FromAccountId.HasValue ? TransactionType.Expense : TransactionType.Income;
         public decimal Amount { get; private set; }
