@@ -25,7 +25,6 @@ jobs:
             ${{ runner.os }}-node-
     - name: npm install
       run: npm install
-      working-directory: src/MoneyTracker.SPA/moneyTracker
       
     - name: Install dependencies
       run: dotnet restore  
