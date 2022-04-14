@@ -17,14 +17,14 @@ namespace MoneyTracker.UnitTests
         }
 
         [Fact]
-        public void AddExpenseTransaction_WhenBalanceNotEnough_ThenConflictException()
+        public void AddExpenseTransactionWhenBalanceNotEnoughThenConflictExceptionThrown()
         {
             var transaction = new Transaction(Guid.NewGuid(), null, "Products", 201, null, _date);
             Assert.Throws<ConflictException>(() => _account.AddExpenseTransaction(transaction));
         }
 
         [Fact]
-        public void AddExpenseTransaction_WhenCorrect_Success()
+        public void AddExpenseTransactionWhenAccountStateCorrectThenAddedSuccessfully()
         {
             var transaction = new Transaction(Guid.NewGuid(), null, "Products", 50, null, _date);
             _account.AddExpenseTransaction(transaction);
@@ -32,7 +32,7 @@ namespace MoneyTracker.UnitTests
         }
 
         [Fact]
-        public void RemoveExpense_WhenCorrect_Success()
+        public void RemoveExpenseTransactionWhenAccountStateCorrectThenRemovedSuccessfully()
         {
             var transaction = new Transaction(Guid.NewGuid(), null, "Products", 50, null, _date);
             _account.AddExpenseTransaction(transaction);
@@ -41,31 +41,31 @@ namespace MoneyTracker.UnitTests
         }
 
         [Fact]
-        public void RemoveExpenseTransaction_WhenBalanceNotEnough_ThenConflictException()
+        public void RemoveIncomeTransactionWhenBalanceNotEnoughThenConflictExceptionThrown()
         {
-            var expense_transaction = new Transaction(Guid.NewGuid(), null, "Products", 300, null, _date);
+            var expenseTransaction = new Transaction(Guid.NewGuid(), null, "Products", 300, null, _date);
             var incomeTransaction = new Transaction(null, Guid.NewGuid(), "Salary", 200, null, _date);
             _account.AddIncomeTransaction(incomeTransaction);
-            _account.AddExpenseTransaction(expense_transaction);
+            _account.AddExpenseTransaction(expenseTransaction);
             Assert.Throws<ConflictException>(() => _account.RemoveIncomeTransaction(incomeTransaction));
         }
 
 
         [Fact]
-        public void CreateTransaction_WhenAccountsIdAreEqual_ThenArgumentException()
+        public void CreateTransactionWhenAccountsIdAreEqualThenArgumentExceptionThrown()
         {
-            var transactionId = Guid.NewGuid();
-            Assert.Throws<ArgumentException>(() => new Transaction(transactionId, transactionId, "Products", 300, null, _date));
+            var accountsId = Guid.NewGuid();
+            Assert.Throws<ArgumentException>(() => new Transaction(accountsId, accountsId, "Products", 300, null, _date));
         }
 
         [Fact]
-        public void CreateTransaction_WhenAmountIsLessThan0_ThenArgumentException()
+        public void CreateTransactionWhenAmountIsLessThan0ThenArgumentExceptionThrown()
         {
             Assert.Throws<ArgumentException>(() => new Transaction(Guid.NewGuid(), Guid.NewGuid(), "Products", -30, null, _date));
         }
 
         [Fact]
-        public void AddIncomeTransaction_WhenCorrect_Success()
+        public void AddIncomeTransactionWhenAccountStateCorrectThenAddedSuccessfully()
         {
             var transaction = new Transaction(null, Guid.NewGuid(), "Schoolarship", 2000, null, _date);
             _account.AddIncomeTransaction(transaction);
@@ -73,14 +73,14 @@ namespace MoneyTracker.UnitTests
         }
 
         [Fact]
-        public void AddExpenseTransaction_WhenTransactionIsIncome_InvalidOperationException()
+        public void AddExpenseTransactionWhenTransactionIsIncomeThenInvalidOperationExceptionThrown()
         {
             var transaction = new Transaction(null, Guid.NewGuid(), "Salary", 2000, null, _date);
             Assert.Throws<InvalidOperationException>(() => _account.AddExpenseTransaction(transaction));
         }
 
         [Fact]
-        public void AddIncomeTransaction_WhenTransactionIsExpense_InvalidOperationException()
+        public void AddIncomeTransactionWhenTransactionIsExpenseThenInvalidOperationExceptionThrown()
         {
             var transaction = new Transaction(Guid.NewGuid(), null, "Products", 2000, null, _date);
             Assert.Throws<InvalidOperationException>(() => _account.AddIncomeTransaction(transaction));

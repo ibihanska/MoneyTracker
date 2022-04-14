@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.UnitTests", "MoneyTracker.UnitTests\MoneyTracker.UnitTests.csproj", "{3D30151F-9DD7-4CB4-9152-83FA3037671D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.SPA", "MoneyTracker.SPA\MoneyTracker.SPA.csproj", "{6E1A0EC4-CF90-4817-AB44-2223DE6EADCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTracker.Domain.Tests", "MoneyTracker.UnitTests\MoneyTracker.Domain.Tests.csproj", "{3D30151F-9DD7-4CB4-9152-83FA3037671D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
