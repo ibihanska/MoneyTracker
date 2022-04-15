@@ -26,9 +26,10 @@ jobs:
             
     - name: directories
       run: ls 
-      working-directory: MoneyTracker/MoneyTracker.SPA/  
+      working-directory: MoneyTracker/MoneyTracker.SPA/moneyTracker  
     - name: npm install 
       run: npm install
+      working-directory: MoneyTracker/MoneyTracker.SPA/moneyTracker  
     - name: Install dependencies
       run: dotnet restore  
     - name: Build
