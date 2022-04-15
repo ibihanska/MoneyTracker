@@ -31,7 +31,7 @@ jobs:
       run: npm install
       working-directory: MoneyTracker/MoneyTracker.SPA/moneyTracker  
     - name: Install dependencies
-      run: dotnet restore  
+      run: dotnet restore MoneyTracker.sln  
     - name: Build
       run: dotnet build MoneyTracker.sln --configuration Release
     - name: Test
