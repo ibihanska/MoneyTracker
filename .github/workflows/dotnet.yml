@@ -32,7 +32,10 @@ jobs:
       working-directory: MoneyTracker/MoneyTracker.SPA/moneyTracker  
     - name: Install dependencies
       run: dotnet restore MoneyTracker.sln  
+      working-directory: MoneyTracker/
     - name: Build
       run: dotnet build MoneyTracker.sln --configuration Release
+      working-directory: MoneyTracker/
     - name: Test
       run: dotnet test MoneyTracker.sln
+      working-directory: MoneyTracker/
