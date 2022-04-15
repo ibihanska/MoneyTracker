@@ -24,10 +24,9 @@ jobs:
         restore-keys: |
             ${{ runner.os }}-node-
             
-    - name: npm init
-      run: npm init        
     - name: npm install
       run: npm install
+      working-directory: MoneyTracker.SPA/moneyTracker
     - name: Install dependencies
       run: dotnet restore  
     - name: Build
