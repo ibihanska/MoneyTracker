@@ -22,11 +22,7 @@ jobs:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-            ${{ runner.os }}-node-
-            
-    - name: directories
-      run: ls 
-      working-directory: MoneyTracker/MoneyTracker.SPA/moneyTracker  
+            ${{ runner.os }}-node- 
     - name: npm install 
       run: npm install
       working-directory: MoneyTracker/MoneyTracker.SPA/moneyTracker  
