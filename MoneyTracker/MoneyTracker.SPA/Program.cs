@@ -19,7 +19,6 @@ builder.Services.AddControllers(options =>
         .Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
-
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add<ExceptionFilter>();
@@ -67,6 +66,7 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddTransient<IDateTime, MachineDateTime>();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 builder.Services.AddCors();
 var app = builder.Build();
 app.UseCors(options => options

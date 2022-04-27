@@ -1,8 +1,14 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MoneyTracker.Application.Common;
 using MoneyTracker.Application.Common.Interfaces;
+using MoneyTracker.Application.TransactionQueries;
 using MoneyTracker.Domain.AccountAggregate;
+using MoneyTracker.Infrastructure;
+using Newtonsoft.Json;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
@@ -21,16 +27,18 @@ namespace MoneyTracker.Application.TransactionCommands
                 RuleFor(m => m.Amount).NotEmpty().GreaterThan(0);
                 RuleFor(m => m.FromAccountId).NotEqual(m => m.ToAccountId);
                 RuleFor(m => m.TransactionDate).NotEmpty();
-                RuleFor(m => m.TagName).NotEmpty().When(m=>m.FromAccountId==null|| m.ToAccountId == null);
+                RuleFor(m => m.TagName).NotEmpty().When(m => m.FromAccountId == null || m.ToAccountId == null);
             }
         }
         public class AddTransactionCommandHandler : IRequestHandler<AddTransactionCommand, Guid>
         {
             private readonly IMoneyTrackerDbContext _context;
+            private readonly IQueueService _queueService;
 
-            public AddTransactionCommandHandler(IMoneyTrackerDbContext context)
+            public AddTransactionCommandHandler(IMoneyTrackerDbContext context, IQueueService queueService)
             {
                 _context = context;
+                _queueService = queueService ?? throw new ArgumentNullException(nameof(queueService));
             }
 
             public async Task<Guid> Handle(AddTransactionCommand request, CancellationToken cancellationToken)
@@ -56,6 +64,14 @@ namespace MoneyTracker.Application.TransactionCommands
 
                 await _context.SaveChangesAsync(cancellationToken);
 
+                if (request.FromAccountId != null)
+                {
+                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.FromAccountId);
+                }
+                if (request.ToAccountId != null)
+                {
+                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.ToAccountId);
+                }
                 return transaction.Id;
             }
         }

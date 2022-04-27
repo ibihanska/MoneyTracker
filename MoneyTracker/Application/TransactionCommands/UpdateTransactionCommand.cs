@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MoneyTracker.Application.Common;
 using MoneyTracker.Application.Common.Exceptions;
 using MoneyTracker.Application.Common.Interfaces;
 using MoneyTracker.Domain.AccountAggregate;
+using MoneyTracker.Infrastructure;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
@@ -30,10 +32,13 @@ namespace MoneyTracker.Application.TransactionCommands
         public class UpdateTransactionCommandHandler : IRequestHandler<UpdateTransactionCommand>
         {
             private readonly IMoneyTrackerDbContext _context;
-            public UpdateTransactionCommandHandler(IMoneyTrackerDbContext context)
+            private readonly IQueueService _queueService;
+            public UpdateTransactionCommandHandler(IMoneyTrackerDbContext context, IQueueService queueService)
             {
                 _context = context;
+                _queueService = queueService ?? throw new ArgumentNullException(nameof(queueService));
             }
+
 
             public async Task<Unit> Handle(UpdateTransactionCommand request, CancellationToken cancellationToken)
             {
@@ -50,6 +55,14 @@ namespace MoneyTracker.Application.TransactionCommands
                request.TagName, request.Amount, request.Note, request.TransactionDate);
 
                 await _context.SaveChangesAsync(cancellationToken);
+                if (request.FromAccountId != null)
+                {
+                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.FromAccountId);
+                }
+                if (request.ToAccountId != null)
+                {
+                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.ToAccountId);
+                }
                 return Unit.Value;
             }
         }
