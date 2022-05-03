@@ -1,4 +1,4 @@
-﻿namespace MoneyTracker.Application.Common.Interfaces
+﻿namespace MoneyTracker.Infrastructure.Services
 {
     public interface IDateTime
     {

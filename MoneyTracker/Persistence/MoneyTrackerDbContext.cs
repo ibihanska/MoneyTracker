@@ -2,6 +2,7 @@
 using MoneyTracker.Application.Common.Interfaces;
 using MoneyTracker.Domain.AccountAggregate;
 using MoneyTracker.Domain.Common;
+using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Persistence
 {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MoneyTracker.Application.Common;
 using MoneyTracker.Application.Common.Interfaces;
-using MoneyTracker.Infrastructure;
+using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
@@ -30,11 +30,11 @@ namespace MoneyTracker.Application.TransactionCommands
                 transaction?.ToAccount?.RemoveIncomeTransaction(transaction);
                 if (transaction.FromAccountId != null)
                 {
-                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, transaction.FromAccountId);
+                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)transaction.FromAccountId });
                 }
                 if (transaction.ToAccountId != null)
                 {
-                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, transaction.ToAccountId);
+                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)transaction.FromAccountId });
                 }
                 _context.Transactions.Remove(transaction);
                 await _context.SaveChangesAsync(cancellationToken);

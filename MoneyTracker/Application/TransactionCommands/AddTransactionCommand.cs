@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoneyTracker.Application.Common;
 using MoneyTracker.Application.Common.Interfaces;
-using MoneyTracker.Application.TransactionQueries;
 using MoneyTracker.Domain.AccountAggregate;
-using MoneyTracker.Infrastructure;
-using Newtonsoft.Json;
+using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
@@ -66,11 +62,11 @@ namespace MoneyTracker.Application.TransactionCommands
 
                 if (request.FromAccountId != null)
                 {
-                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.FromAccountId);
+                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
                 }
                 if (request.ToAccountId != null)
                 {
-                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.ToAccountId);
+                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
                 }
                 return transaction.Id;
             }

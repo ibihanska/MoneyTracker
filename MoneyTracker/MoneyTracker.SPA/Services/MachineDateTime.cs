@@ -1,4 +1,4 @@
-﻿using MoneyTracker.Application.Common.Interfaces;
+﻿using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.SPA.Services
 {

@@ -5,7 +5,7 @@ using MoneyTracker.Application.Common;
 using MoneyTracker.Application.Common.Exceptions;
 using MoneyTracker.Application.Common.Interfaces;
 using MoneyTracker.Domain.AccountAggregate;
-using MoneyTracker.Infrastructure;
+using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
@@ -57,11 +57,11 @@ namespace MoneyTracker.Application.TransactionCommands
                 await _context.SaveChangesAsync(cancellationToken);
                 if (request.FromAccountId != null)
                 {
-                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.FromAccountId);
+                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
                 }
                 if (request.ToAccountId != null)
                 {
-                    _queueService.SendMessageAsync(AccountReportRequest.QueueName, request.ToAccountId);
+                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
                 }
                 return Unit.Value;
             }

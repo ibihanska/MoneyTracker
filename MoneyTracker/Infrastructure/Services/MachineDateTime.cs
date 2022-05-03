@@ -1,6 +1,4 @@
-﻿using MoneyTracker.Application.Common.Interfaces;
-
-namespace WebJobs.Services
+﻿namespace MoneyTracker.Infrastructure.Services
 {
     public class MachineDateTime : IDateTime
     {

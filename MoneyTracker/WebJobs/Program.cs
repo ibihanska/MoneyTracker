@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MoneyTracker.Application.Common.Interfaces;
+using MoneyTracker.Infrastructure;
 using MoneyTracker.Persistence;
 using WebJobs.Services;
 
@@ -37,15 +33,9 @@ namespace WebJobs // Note: actual namespace depends on the project name.
 
             builder.ConfigureServices((context, services) =>
             {
-                services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
                 services.AddScoped<ICurrentUserService, CurrentUserService>();
-                services.AddAutoMapper(typeof(TransactionProfile));
-                services.AddTransient<IDateTime, MachineDateTime>();
-                services.AddDbContext<MoneyTrackerDbContext>(options =>
-                options.UseSqlServer(context.Configuration.GetConnectionString("MoneyTrackerDatabase")));
-                services.AddScoped<IMoneyTrackerDbContext>(provider => provider.GetService<MoneyTrackerDbContext>());
-                services.AddScoped<IAccountService, AccountService>();
+                services.AddPersistence(context.Configuration);
+                services.AddInfrastructure();
                 services.AddScoped<IExportDataService, ExportDataService>();
                 services.AddScoped<Functions>();
             });

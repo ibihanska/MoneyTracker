@@ -1,17 +1,19 @@
 ﻿using System.ComponentModel;
 using System.Data;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using MoneyTracker.Application.Common.Interfaces;
 using WebJobs.Services;
 
 namespace WebJobs
 {
     public class ExportDataService : IExportDataService
     {
-        private readonly IAccountService _accountService;
+        private readonly IMoneyTrackerDbContext _context;
 
-        public ExportDataService(IAccountService accountService)
+        public ExportDataService(IMoneyTrackerDbContext context)
         {
-            _accountService = accountService;
+            _context = context;
         }
         public DataTable ConvertListToDataTable<T>(List<T> list)
         {
@@ -34,8 +36,9 @@ namespace WebJobs
         public async Task ExportCsvAsync(Guid accountId)
         {
             string csvCompletePath = @"C:\Users\Iryna\source\repos\spa\Reports\" + accountId + ".csv";
-            var list = _accountService.GetReport(accountId);
-            var data = ConvertListToDataTable(list);
+            var transactionsQuery = _context.Transactions.AsQueryable().AsNoTracking();
+            var transactionList = transactionsQuery.Where(x => x.ToAccount.Id == accountId || x.FromAccount.Id == accountId).ToList();
+            var data = ConvertListToDataTable(transactionList);
             var stringBuilder = new StringBuilder();
 
             IEnumerable<string> columnNames = data.Columns.Cast<DataColumn>().

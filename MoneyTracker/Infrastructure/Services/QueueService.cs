@@ -1,23 +1,22 @@
 ﻿using Azure.Storage.Queues;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
 
-namespace MoneyTracker.Infrastructure
+namespace MoneyTracker.Infrastructure.Services
 {
     public class QueueService : IQueueService
     {
-        private readonly IConfiguration _configuration;
-        public QueueService(IConfiguration configuration)
+        private readonly IOptions<StorageConnectionOptions> _config;
+        public QueueService(IOptions<StorageConnectionOptions> config)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _config = config;
         }
         public async Task SendMessageAsync<T>(string queueName, T message)
         {
-            string connectionString = _configuration["StorageConnectionString"];
+            var connectionString = _config.Value.StorageConnectionString;
             var queueClient = new QueueClient(connectionString, queueName, new QueueClientOptions { MessageEncoding = QueueMessageEncoding.Base64 });
             queueClient.CreateIfNotExists();
-            string accountId = JsonConvert.SerializeObject(message, Formatting.Indented);
+            var accountId = JsonConvert.SerializeObject(message, Formatting.Indented);
             if (queueClient.Exists())
             {
                 await queueClient.SendMessageAsync(accountId);

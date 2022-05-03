@@ -6,9 +6,9 @@ namespace WebJobs.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
-        public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+        public CurrentUserService()
         {
-            UserEmail = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
+            UserEmail = "webjob@gmail.com";
         }
         public string UserEmail { get; }
     }

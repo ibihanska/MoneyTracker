@@ -15,9 +15,9 @@ namespace WebJobs
         }
 
         public async Task ProcessQueueMessageAsync(
-              [QueueTrigger(AccountReportRequest.QueueName)] Guid accountId, ILogger logger)
+              [QueueTrigger(AccountReportMessage.QueueName)] AccountReportMessage request, ILogger logger)
         {
-            _exportData.ExportCsvAsync(accountId);
+            await _exportData.ExportCsvAsync(request.AccountId);
             logger.LogInformation("Report generated!");
         }
     }
