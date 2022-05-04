@@ -17,7 +17,7 @@ namespace MoneyTracker.Application.Common.Behaviour
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            await next();
+            result = await next();
             foreach (var message in request.AccountReportMessages)
             {
                 await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = message.AccountId });
