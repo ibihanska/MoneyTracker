@@ -6,9 +6,11 @@ using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
-    public class DeleteTransactionCommand : IRequest
+    public class DeleteTransactionCommand : IRequest, IHaveMessages
     {
         public Guid Id { get; set; }
+        public List<AccountReportMessage>? AccountReportMessages { get; set; }
+
         public class DeleteTransactionCommandHandler : IRequestHandler<DeleteTransactionCommand>
         {
             private readonly IMoneyTrackerDbContext _context;
@@ -21,6 +23,7 @@ namespace MoneyTracker.Application.TransactionCommands
 
             public async Task<Unit> Handle(DeleteTransactionCommand request, CancellationToken cancellationToken)
             {
+                var accountReportMessages = new List<AccountReportMessage>();
                 var transaction = await _context.Transactions
                     .Include(x => x.FromAccount)
                     .Include(x => x.ToAccount)
@@ -30,12 +33,13 @@ namespace MoneyTracker.Application.TransactionCommands
                 transaction?.ToAccount?.RemoveIncomeTransaction(transaction);
                 if (transaction.FromAccountId != null)
                 {
-                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)transaction.FromAccountId });
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)transaction.FromAccountId });
                 }
                 if (transaction.ToAccountId != null)
                 {
-                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)transaction.FromAccountId });
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)transaction.ToAccountId });
                 }
+                request.AccountReportMessages = accountReportMessages;
                 _context.Transactions.Remove(transaction);
                 await _context.SaveChangesAsync(cancellationToken);
                 return Unit.Value;

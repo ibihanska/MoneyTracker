@@ -9,7 +9,7 @@ using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
-    public class UpdateTransactionCommand : IRequest
+    public class UpdateTransactionCommand : IRequest, IHaveMessages
     {
         public Guid Id { get; set; }
         public Guid? FromAccountId { get; set; }
@@ -18,6 +18,8 @@ namespace MoneyTracker.Application.TransactionCommands
         public DateTime TransactionDate { get; set; }
         public string TagName { get; set; }
         public string? Note { get; set; }
+        public List<AccountReportMessage>? AccountReportMessages { get; set; }
+
         public class UpdateTransactionCommandValidator : AbstractValidator<UpdateTransactionCommand>
         {
             public UpdateTransactionCommandValidator()
@@ -55,14 +57,16 @@ namespace MoneyTracker.Application.TransactionCommands
                request.TagName, request.Amount, request.Note, request.TransactionDate);
 
                 await _context.SaveChangesAsync(cancellationToken);
-                if (request.FromAccountId != null)
+                var accountReportMessages = new List<AccountReportMessage>();
+                if (transaction.FromAccountId != null)
                 {
-                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
                 }
-                if (request.ToAccountId != null)
+                if (transaction.ToAccountId != null)
                 {
-                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.ToAccountId });
                 }
+                request.AccountReportMessages = accountReportMessages;
                 return Unit.Value;
             }
         }

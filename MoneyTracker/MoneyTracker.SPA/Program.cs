@@ -6,7 +6,6 @@ using Microsoft.OpenApi.Models;
 using MoneyTracker.Application;
 using MoneyTracker.Application.Common.Interfaces;
 using MoneyTracker.Infrastructure;
-using MoneyTracker.Infrastructure.Services;
 using MoneyTracker.Persistence;
 using MoneyTracker.SPA.Common;
 using MoneyTracker.SPA.Services;

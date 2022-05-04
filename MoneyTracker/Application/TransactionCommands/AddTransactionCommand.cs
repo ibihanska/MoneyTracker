@@ -8,7 +8,7 @@ using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
-    public class AddTransactionCommand : IRequest<Guid>
+    public class AddTransactionCommand : IRequest<Guid>, IHaveMessages
     {
         public Guid? FromAccountId { get; set; }
         public Guid? ToAccountId { get; set; }
@@ -16,6 +16,8 @@ namespace MoneyTracker.Application.TransactionCommands
         public DateTime TransactionDate { get; set; }
         public string? TagName { get; set; }
         public string? Note { get; set; }
+        public List<AccountReportMessage>? AccountReportMessages { get; set; }
+
         public class AddTransactionCommandValidator : AbstractValidator<AddTransactionCommand>
         {
             public AddTransactionCommandValidator()
@@ -26,6 +28,7 @@ namespace MoneyTracker.Application.TransactionCommands
                 RuleFor(m => m.TagName).NotEmpty().When(m => m.FromAccountId == null || m.ToAccountId == null);
             }
         }
+
         public class AddTransactionCommandHandler : IRequestHandler<AddTransactionCommand, Guid>
         {
             private readonly IMoneyTrackerDbContext _context;
@@ -59,15 +62,16 @@ namespace MoneyTracker.Application.TransactionCommands
                 toAccount?.AddIncomeTransaction(transaction);
 
                 await _context.SaveChangesAsync(cancellationToken);
-
-                if (request.FromAccountId != null)
+                var accountReportMessages = new List<AccountReportMessage>();
+                if (transaction.FromAccountId != null)
                 {
-                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
                 }
-                if (request.ToAccountId != null)
+                if (transaction.ToAccountId != null)
                 {
-                    await _queueService.SendMessageAsync(AccountReportMessage.QueueName, new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.ToAccountId });
                 }
+                request.AccountReportMessages = accountReportMessages;
                 return transaction.Id;
             }
         }
