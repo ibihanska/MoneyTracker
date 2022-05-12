@@ -1,13 +1,15 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MoneyTracker.Application.Common;
 using MoneyTracker.Application.Common.Exceptions;
 using MoneyTracker.Application.Common.Interfaces;
 using MoneyTracker.Domain.AccountAggregate;
+using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
-    public class UpdateTransactionCommand : IRequest
+    public class UpdateTransactionCommand : IRequest, IHaveMessages
     {
         public Guid Id { get; set; }
         public Guid? FromAccountId { get; set; }
@@ -16,6 +18,8 @@ namespace MoneyTracker.Application.TransactionCommands
         public DateTime TransactionDate { get; set; }
         public string TagName { get; set; }
         public string? Note { get; set; }
+        public List<AccountReportMessage>? AccountReportMessages { get; set; }
+
         public class UpdateTransactionCommandValidator : AbstractValidator<UpdateTransactionCommand>
         {
             public UpdateTransactionCommandValidator()
@@ -30,10 +34,13 @@ namespace MoneyTracker.Application.TransactionCommands
         public class UpdateTransactionCommandHandler : IRequestHandler<UpdateTransactionCommand>
         {
             private readonly IMoneyTrackerDbContext _context;
-            public UpdateTransactionCommandHandler(IMoneyTrackerDbContext context)
+            private readonly IQueueService _queueService;
+            public UpdateTransactionCommandHandler(IMoneyTrackerDbContext context, IQueueService queueService)
             {
                 _context = context;
+                _queueService = queueService ?? throw new ArgumentNullException(nameof(queueService));
             }
+
 
             public async Task<Unit> Handle(UpdateTransactionCommand request, CancellationToken cancellationToken)
             {
@@ -50,6 +57,16 @@ namespace MoneyTracker.Application.TransactionCommands
                request.TagName, request.Amount, request.Note, request.TransactionDate);
 
                 await _context.SaveChangesAsync(cancellationToken);
+                var accountReportMessages = new List<AccountReportMessage>();
+                if (transaction.FromAccountId != null)
+                {
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
+                }
+                if (transaction.ToAccountId != null)
+                {
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.ToAccountId });
+                }
+                request.AccountReportMessages = accountReportMessages;
                 return Unit.Value;
             }
         }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Models;
 using MoneyTracker.Application;
 using MoneyTracker.Application.Common.Interfaces;
+using MoneyTracker.Infrastructure;
 using MoneyTracker.Persistence;
 using MoneyTracker.SPA.Common;
 using MoneyTracker.SPA.Services;
@@ -19,7 +20,6 @@ builder.Services.AddControllers(options =>
         .Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
-
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add<ExceptionFilter>();
@@ -64,9 +64,11 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-builder.Services.AddTransient<IDateTime, MachineDateTime>();
+
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddOptions<StorageConnectionOptions>().Bind(builder.Configuration);
+builder.Services.AddInfrastructure();
 builder.Services.AddCors();
 var app = builder.Build();
 app.UseCors(options => options

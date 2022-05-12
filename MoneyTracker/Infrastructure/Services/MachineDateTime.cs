@@ -1,6 +1,4 @@
-﻿using MoneyTracker.Infrastructure.Services;
-
-namespace MoneyTracker.SPA.Services
+﻿namespace MoneyTracker.Infrastructure.Services
 {
     public class MachineDateTime : IDateTime
     {

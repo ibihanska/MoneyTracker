@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using MoneyTracker.Application.AccountCommands;
 using MoneyTracker.Application.AccountQueries;
 
@@ -54,6 +55,22 @@ namespace MoneyTracker.SPA.Controllers
             await Mediator.Send(new DeleteAccountCommand { Id = id });
 
             return NoContent();
+        }
+
+        // Get api/<AccountsController>/5
+        [HttpGet("reports/{id}")]
+        public async Task<ActionResult> GetAccountReport(Guid id)
+        {
+            var filePath = @"C:\Users\Iryna\source\repos\spa\Reports\" + id + ".csv";
+
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(bytes, contentType, Path.GetFileName(filePath));
         }
     }
 }

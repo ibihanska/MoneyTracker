@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MoneyTracker.Application.Common;
 using MoneyTracker.Application.Common.Interfaces;
 using MoneyTracker.Domain.AccountAggregate;
+using MoneyTracker.Infrastructure.Services;
 
 namespace MoneyTracker.Application.TransactionCommands
 {
-    public class AddTransactionCommand : IRequest<Guid>
+    public class AddTransactionCommand : IRequest<Guid>, IHaveMessages
     {
         public Guid? FromAccountId { get; set; }
         public Guid? ToAccountId { get; set; }
@@ -14,6 +16,8 @@ namespace MoneyTracker.Application.TransactionCommands
         public DateTime TransactionDate { get; set; }
         public string? TagName { get; set; }
         public string? Note { get; set; }
+        public List<AccountReportMessage>? AccountReportMessages { get; set; }
+
         public class AddTransactionCommandValidator : AbstractValidator<AddTransactionCommand>
         {
             public AddTransactionCommandValidator()
@@ -21,16 +25,19 @@ namespace MoneyTracker.Application.TransactionCommands
                 RuleFor(m => m.Amount).NotEmpty().GreaterThan(0);
                 RuleFor(m => m.FromAccountId).NotEqual(m => m.ToAccountId);
                 RuleFor(m => m.TransactionDate).NotEmpty();
-                RuleFor(m => m.TagName).NotEmpty().When(m=>m.FromAccountId==null|| m.ToAccountId == null);
+                RuleFor(m => m.TagName).NotEmpty().When(m => m.FromAccountId == null || m.ToAccountId == null);
             }
         }
+
         public class AddTransactionCommandHandler : IRequestHandler<AddTransactionCommand, Guid>
         {
             private readonly IMoneyTrackerDbContext _context;
+            private readonly IQueueService _queueService;
 
-            public AddTransactionCommandHandler(IMoneyTrackerDbContext context)
+            public AddTransactionCommandHandler(IMoneyTrackerDbContext context, IQueueService queueService)
             {
                 _context = context;
+                _queueService = queueService ?? throw new ArgumentNullException(nameof(queueService));
             }
 
             public async Task<Guid> Handle(AddTransactionCommand request, CancellationToken cancellationToken)
@@ -55,7 +62,16 @@ namespace MoneyTracker.Application.TransactionCommands
                 toAccount?.AddIncomeTransaction(transaction);
 
                 await _context.SaveChangesAsync(cancellationToken);
-
+                var accountReportMessages = new List<AccountReportMessage>();
+                if (transaction.FromAccountId != null)
+                {
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.FromAccountId });
+                }
+                if (transaction.ToAccountId != null)
+                {
+                    accountReportMessages.Add(new AccountReportMessage { AccountId = (Guid)request.ToAccountId });
+                }
+                request.AccountReportMessages = accountReportMessages;
                 return transaction.Id;
             }
         }

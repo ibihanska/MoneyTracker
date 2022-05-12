@@ -14,10 +14,12 @@
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\MoneyTracker.Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure\MoneyTracker.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
