@@ -1,0 +1,34 @@
+name: Build and test
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:    
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+            ${{ runner.os }}-node- 
+    - name: Install dependencies
+      run: dotnet restore MoneyTracker.sln  
+      working-directory: MoneyTracker/
+    - name: Build
+      run: dotnet build MoneyTracker.sln --configuration Release
+      working-directory: MoneyTracker/
+    - name: Test
+      run: dotnet test MoneyTracker.sln
+      working-directory: MoneyTracker/
